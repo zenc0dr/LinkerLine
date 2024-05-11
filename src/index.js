@@ -44,10 +44,21 @@ export default class LinkerLine extends LeaderLine {
         super.hide(effectName,options);
     }
 
-    remove(){
+    remove() {
+        // Проверяем, существует ли SVG элемент и его родитель
+        if (this.element && this.element.parentNode) {
+            this.element.parentNode.removeChild(this.element);
+        }
+        // Удаляем ссылку на элемент из карты
         delete statics.linemap[this.id];
-        document.body.appendChild(this.element);
-        super.remove();
+        // Обнуляем свойства для предотвращения утечек памяти
+        this.element = null;
+        this.start = null;
+        this.end = null;
+        // Удаляем элемент из DOM
+        if (document.body.contains(this.element)) {
+            document.body.removeChild(this.element);
+        }
     }
 
     setOptions(options){
