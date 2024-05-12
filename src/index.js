@@ -77,6 +77,17 @@ export default class LinkerLine extends LeaderLine {
         }
     }
 
+    static removeAllLines() {
+        const { linemap } = statics;
+        for (const lineId in linemap) {
+            const line = linemap[lineId];
+            // Предполагается, что метод remove правильно реализован в LinkerLine
+            line.remove();
+            // Удаляем линию из карты, чтобы предотвратить утечки памяти
+            delete linemap[lineId];
+        }
+    }
+
     static PointAnchor(element,options){
         return LeaderLine.pointAnchor(element,options);
     }
